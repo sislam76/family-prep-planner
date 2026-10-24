@@ -55,11 +55,8 @@
 
       <div class="field">
         <label for="duration">How many days do you want to be covered for?</label>
-        <select id="duration">
-          <option value="1">1 day</option>
-          <option value="3" selected>3 days</option>
-          <option value="5">5 days</option>
-        </select>
+        <input type="number" id="duration" min="1" max="30" value="3" required />
+        <p class="field-hint">Most realistic short disruptions last 1-5 days before help arrives, but plan for longer if you want extra buffer.</p>
       </div>
 
       <div class="field">

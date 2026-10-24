@@ -207,6 +207,29 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 .item label { display: flex; align-items: flex-start; gap: 0.6rem; flex: 1; min-width: 220px; font-weight: 400 !important; font-size: 0.93rem; }
 .item input[type="checkbox"] { margin-top: 0.25rem; width: 1.1rem; height: 1.1rem; flex-shrink: 0; accent-color: var(--accent); }
 
+.climate-warning {
+  background: #fef6e8;
+  border: 1px solid #f3dca0;
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 1.1rem;
+  color: #7a5a10;
+  font-size: 0.88rem;
+  margin-bottom: 1.2rem;
+}
+
+.tag-climate {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: #7a5a10;
+  background: #fef6e8;
+  border-radius: 5px;
+  padding: 0.12rem 0.4rem;
+  margin-left: 0.35rem;
+}
+
 .tag-essential {
   display: inline-block;
   font-size: 0.65rem;

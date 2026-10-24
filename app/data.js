@@ -40,7 +40,7 @@ const CATEGORIES = [
       // General base (always included, any cuisine)
       { name: 'Tinned food (beans, soup, fish, fruit) with ring-pull lids', qty: (h) => `${h.people * h.duration} tins`, cost: (h) => h.people * h.duration * 1, essential: true },
       { name: 'Manual tin opener', qty: () => '1', cost: () => 3, essential: true },
-      { name: 'UHT milk or milk alternative', qty: (h) => `${h.people} cartons`, cost: (h) => h.people * 1.2, essential: false },
+      { name: 'UHT milk or milk alternative', qty: (h) => `${h.people} cartons`, cost: (h) => h.people * 1.2, essential: false, climateSensitive: true },
       {
         name: 'Ready-to-eat high-calorie meals (military/expedition-style ration packs)',
         qty: (h) => `${h.people * h.duration} meals (backup only — see staples above for everyday meals)`,
@@ -52,14 +52,16 @@ const CATEGORIES = [
         qty: (h) => h.diet.includes('infant-formula') ? `${h.duration} days supply` : null,
         cost: (h) => h.duration * 10,
         essential: true,
-        conditional: 'infant-formula'
+        conditional: 'infant-formula',
+        climateSensitive: true
       },
       {
         name: 'Familiar comfort snacks/treats for children (biscuits, something they already like)',
         qty: (h) => h.children > 0 ? `${h.children} supply` : null,
         cost: (h) => h.children * 5,
         essential: false,
-        showIf: (h) => h.children > 0
+        showIf: (h) => h.children > 0,
+        climateSensitive: true
       },
 
       // General / Western staples
@@ -140,7 +142,13 @@ const CATEGORIES = [
     note: 'A power cut affects lighting, phone charging and (if electric) cooking.',
     items: [
       { name: 'Torches (one per person, not relying on phone)', qty: (h) => `${h.people}`, cost: (h) => h.people * 5, essential: true },
-      { name: 'Spare batteries for torches', qty: (h) => `${h.people * 2}`, cost: (h) => h.people * 2 * 0.5, essential: true },
+      { name: 'Spare batteries for torches', qty: (h) => `${h.people * 2}`, cost: (h) => h.people * 2 * 0.5, essential: true, climateSensitive: true },
+      {
+        name: 'Charging cables for every device (match your actual connectors — USB-C, Lightning, micro-USB)',
+        qty: (h) => `${Math.max(1, h.devices)}`,
+        cost: (h) => Math.max(1, h.devices) * 3,
+        essential: true
+      },
       {
         name: 'Power bank / battery pack for phones',
         // Planning figures: one full phone charge ≈ 15Wh. A 20,000mAh pack is ~74Wh nominal,
@@ -167,7 +175,8 @@ const CATEGORIES = [
           }
           return packs * 25;
         },
-        essential: true
+        essential: true,
+        climateSensitive: true
       },
       {
         name: 'Foldable solar panel (to recharge the power bank without mains power)',
@@ -201,17 +210,24 @@ const CATEGORIES = [
     title: 'Health & hygiene',
     note: 'Cover regular medication, basic first aid and hygiene without running water.',
     items: [
-      { name: 'First aid kit', qty: () => '1', cost: () => 15, essential: true },
+      { name: 'First aid kit', qty: () => '1', cost: () => 15, essential: true, climateSensitive: true },
       {
         name: 'Regular prescription medication (ask GP/pharmacist about a few days\' buffer)',
         qty: (h) => `${h.duration}+ days supply per person`,
         cost: () => null,
-        essential: true
+        essential: true,
+        climateSensitive: true
       },
       { name: 'Hand sanitiser', qty: () => '1-2 bottles', cost: () => 3, essential: true },
       { name: 'Wet wipes', qty: (h) => `${h.people} packs`, cost: (h) => h.people * 1.5, essential: true },
       { name: 'Bin bags (for waste if bins aren\'t collected)', qty: () => '1 roll', cost: () => 2, essential: false },
-      { name: 'Face masks', qty: (h) => `${h.people} packs`, cost: (h) => h.people * 3, essential: false }
+      { name: 'Face masks', qty: (h) => `${h.people} packs`, cost: (h) => h.people * 3, essential: false },
+      {
+        name: 'Bucket with sealable lid + bin bags (emergency toilet if water/sewage is disrupted)',
+        qty: () => '1',
+        cost: () => 8,
+        essential: false
+      }
     ]
   },
   {
@@ -241,8 +257,16 @@ const CATEGORIES = [
     note: null,
     showIf: (h) => h.elderly > 0,
     items: [
-      { name: 'Spare mobility/medical aid batteries (hearing aids, etc.)', qty: () => 'check specific devices', cost: () => 5, essential: true },
+      { name: 'Spare mobility/medical aid batteries (hearing aids, etc.)', qty: () => 'check specific devices', cost: () => 5, essential: true, climateSensitive: true },
       { name: 'Extra blanket/warmth layer', qty: (h) => `${h.elderly}`, cost: (h) => h.elderly * 8, essential: false }
+    ]
+  },
+  {
+    id: 'wellbeing',
+    title: 'Comfort & wellbeing',
+    note: 'Swedish and French civil preparedness guidance both flag this: stress and boredom are real during a multi-day disruption, especially with kids at home and no power/internet.',
+    items: [
+      { name: 'Playing cards, a board game, or books for the whole household', qty: () => '1-2 items', cost: () => 10, essential: false }
     ]
   },
   {

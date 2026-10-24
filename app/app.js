@@ -26,7 +26,9 @@ function readHousehold() {
     children: Math.max(0, parseInt(document.getElementById('children').value, 10) || 0),
     elderly: Math.max(0, parseInt(document.getElementById('elderly').value, 10) || 0),
     pets: Math.max(0, parseInt(document.getElementById('pets').value, 10) || 0),
+    tier: document.getElementById('tier').value,
     space: document.getElementById('space').value,
+    storageLocation: document.getElementById('storageLocation').value,
     duration: parseInt(document.getElementById('duration').value, 10) || 3,
     cuisine: document.getElementById('cuisine').value,
     diet,
@@ -42,7 +44,9 @@ function populateForm(h) {
   document.getElementById('children').value = h.children;
   document.getElementById('elderly').value = h.elderly;
   document.getElementById('pets').value = h.pets;
+  document.getElementById('tier').value = h.tier || 'comfortable';
   document.getElementById('space').value = h.space;
+  document.getElementById('storageLocation').value = h.storageLocation || 'indoor';
   document.getElementById('duration').value = h.duration;
   document.getElementById('cuisine').value = h.cuisine || 'general';
   document.getElementById('cooking').value = h.cooking;
@@ -67,19 +71,38 @@ function itemKey(catId, itemName) {
   return `${catId}::${itemName}`;
 }
 
+const TIER_LABELS = {
+  minimum: 'Minimum',
+  comfortable: 'Comfortable',
+  luxury: 'Thorough'
+};
+
+const STORAGE_LOCATION_LABELS = {
+  indoor: 'inside the house',
+  loft: 'the loft/attic',
+  outbuilding: 'a garage/shed'
+};
+
 function renderPlan(h) {
   document.getElementById('plan-summary').textContent =
     `Plan for ${h.people} ${h.people === 1 ? 'person' : 'people'}` +
     (h.children ? `, including ${h.children} under 5` : '') +
     (h.elderly ? `, ${h.elderly} with additional needs` : '') +
     (h.pets ? `, ${h.pets} pet(s)` : '') +
-    `, covering ${h.duration} day(s), fitted to "${h.space}" storage space.`;
+    `, covering ${h.duration} day(s). ${TIER_LABELS[h.tier] || 'Comfortable'} level, fitted to "${h.space}" storage space, kept in ${STORAGE_LOCATION_LABELS[h.storageLocation] || 'the house'}.`;
 
   const limit = SPACE_LIMITS[h.space] ?? 6;
   const container = document.getElementById('categories');
   container.innerHTML = '';
   let grandTotal = 0;
   let hasUnpriced = false;
+
+  if (h.storageLocation && h.storageLocation !== 'indoor') {
+    const warn = document.createElement('p');
+    warn.className = 'climate-warning';
+    warn.innerHTML = `Storing this in ${STORAGE_LOCATION_LABELS[h.storageLocation]}? Items marked <span class="tag-climate">keep indoors</span> below are damaged by heat, cold or damp — medication, batteries, power banks, formula and similar. Keep those inside and store only the rest out there.`;
+    container.appendChild(warn);
+  }
 
   CATEGORIES.forEach(cat => {
     if (cat.showIf && !cat.showIf(h)) return;
@@ -91,11 +114,20 @@ function renderPlan(h) {
 
     if (visibleItems.length === 0) return;
 
-    // Space-constrained: keep essentials first, trim optional items if space is tight.
+    // Tier decides how much gets included; space further trims the "comfortable" tier.
     visibleItems.sort((a, b) => (b.item.essential === true) - (a.item.essential === true));
-    const shown = h.space === 'tiny' || h.space === 'small'
-      ? visibleItems.filter((e, i) => e.item.essential || i < limit)
-      : visibleItems;
+    let shown;
+    if (h.tier === 'minimum') {
+      shown = visibleItems.filter(e => e.item.essential);
+    } else if (h.tier === 'luxury') {
+      shown = visibleItems;
+    } else {
+      shown = (h.space === 'tiny' || h.space === 'small')
+        ? visibleItems.filter((e, i) => e.item.essential || i < limit)
+        : visibleItems;
+    }
+
+    if (shown.length === 0) return;
 
     const section = document.createElement('section');
     section.className = 'category';
@@ -150,8 +182,12 @@ function renderPlan(h) {
         grandTotal += cost;
       }
 
+      const climateTag = item.climateSensitive && h.storageLocation && h.storageLocation !== 'indoor'
+        ? ' <span class="tag-climate">keep indoors</span>'
+        : '';
+
       const text = document.createElement('span');
-      text.innerHTML = `<strong>${item.name}</strong> — ${qty}` + costLabel + (item.essential ? ' <span class="tag-essential">essential</span>' : '');
+      text.innerHTML = `<strong>${item.name}</strong> — ${qty}` + costLabel + (item.essential ? ' <span class="tag-essential">essential</span>' : '') + climateTag;
 
       label.appendChild(checkbox);
       label.appendChild(text);

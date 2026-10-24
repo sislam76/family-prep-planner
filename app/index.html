@@ -7,14 +7,19 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<header class="site-header">
-  <h1>Family Preparedness Planner</h1>
-  <p class="tagline">Based on UK Government "Prepare" guidance — a sensible, realistic kit for a short disruption (power, water, gas, fuel, food supply), scaled to your household.</p>
+<header class="app-header">
+  <div class="app-header__bar">
+    <span class="app-header__name">Family Preparedness Planner</span>
+    <span class="tag tag--grey">Unofficial &mdash; not a government service</span>
+  </div>
 </header>
 
 <main id="app">
+  <p class="caption">Household emergency planning</p>
+  <h1 class="page-title">Build your preparedness plan</h1>
+  <p class="tagline">Based on UK Government "Prepare" guidance — a sensible, realistic kit for a short disruption (power, water, gas, fuel, food supply), scaled to your household.</p>
 
-  <section id="intake" class="card">
+  <section id="intake" class="panel">
     <h2>Tell us about your household</h2>
     <form id="intake-form">
 
@@ -106,7 +111,7 @@
     </form>
   </section>
 
-  <section id="plan" class="card hidden">
+  <section id="plan" class="panel hidden">
     <div class="plan-header">
       <h2>Your preparedness plan</h2>
       <button id="edit-household" class="btn-secondary">Edit household details</button>

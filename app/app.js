@@ -3,9 +3,14 @@ const STORAGE_KEY = 'prep-planner-v1';
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : { household: null, checked: {} };
+    const parsed = raw ? JSON.parse(raw) : null;
+    return {
+      household: parsed?.household ?? null,
+      checked: parsed?.checked ?? {},
+      removed: parsed?.removed ?? {}
+    };
   } catch {
-    return { household: null, checked: {} };
+    return { household: null, checked: {}, removed: {} };
   }
 }
 
@@ -162,6 +167,27 @@ function renderPlan(h) {
       const li = document.createElement('li');
       li.className = 'item';
 
+      if (state.removed[key]) {
+        li.classList.add('removed');
+        const text = document.createElement('span');
+        text.innerHTML = `<strong>${item.name}</strong> — removed from your plan`;
+
+        const restoreBtn = document.createElement('button');
+        restoreBtn.type = 'button';
+        restoreBtn.className = 'link-btn';
+        restoreBtn.textContent = 'Add back';
+        restoreBtn.addEventListener('click', () => {
+          delete state.removed[key];
+          saveState(state);
+          renderPlan(h);
+        });
+
+        li.appendChild(text);
+        li.appendChild(restoreBtn);
+        list.appendChild(li);
+        return;
+      }
+
       const label = document.createElement('label');
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
@@ -209,8 +235,20 @@ function renderPlan(h) {
       onlineLink.rel = 'noopener';
       onlineLink.textContent = 'Compare online';
 
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'link-btn link-btn-muted';
+      removeBtn.textContent = 'Not needed';
+      removeBtn.title = 'Remove from plan — e.g. you already own this';
+      removeBtn.addEventListener('click', () => {
+        state.removed[key] = true;
+        saveState(state);
+        renderPlan(h);
+      });
+
       links.appendChild(localLink);
       links.appendChild(onlineLink);
+      links.appendChild(removeBtn);
       li.appendChild(links);
 
       list.appendChild(li);

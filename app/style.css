@@ -9,10 +9,14 @@
   --accent: #2f6fed;
   --accent-dark: #1d4fc4;
   --accent-soft: #eaf0fe;
+  --success: #15803d;
+  --success-bg: #e7f6ec;
   --warn-bg: #fdf0e8;
   --warn-text: #b5541f;
+  --essential: #c0372c;
+  --essential-bg: #fde9e7;
   --border: #e3e6ea;
-  --done-bg: #f3f6fb;
+  --done-bg: #e7f6ec;
   --radius: 10px;
   --radius-sm: 8px;
 }
@@ -186,7 +190,14 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 .plan-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
 
 .category { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--border); }
-.category h3 { margin: 0 0 0.3rem; font-size: 1.05rem; color: var(--text); font-weight: 700; }
+.category h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.05rem;
+  color: var(--accent-dark);
+  font-weight: 700;
+  padding-left: 0.65rem;
+  border-left: 3px solid var(--accent);
+}
 .category-note, .diet-note { color: var(--muted); font-size: 0.88rem; margin: 0.2rem 0 0.9rem; max-width: 42em; }
 .diet-note { color: #8a5a1f; }
 
@@ -203,6 +214,12 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 .item:last-child { border-bottom: none; }
 .item.done { background: var(--done-bg); }
 .item.done span strong { text-decoration: line-through; color: var(--muted); }
+.item.removed {
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.item.removed strong { font-weight: 500; text-decoration: line-through; }
 
 .item label { display: flex; align-items: flex-start; gap: 0.6rem; flex: 1; min-width: 220px; font-weight: 400 !important; font-size: 0.93rem; }
 .item input[type="checkbox"] { margin-top: 0.25rem; width: 1.1rem; height: 1.1rem; flex-shrink: 0; accent-color: var(--accent); }
@@ -236,14 +253,14 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   font-weight: 700;
   letter-spacing: 0.3px;
   text-transform: uppercase;
-  color: var(--warn-text);
-  background: var(--warn-bg);
+  color: var(--essential);
+  background: var(--essential-bg);
   border-radius: 5px;
   padding: 0.12rem 0.4rem;
   margin-left: 0.35rem;
 }
 
-.item-links { display: flex; gap: 0.4rem; white-space: nowrap; }
+.item-links { display: flex; gap: 0.4rem; white-space: nowrap; align-items: center; }
 .item-links a {
   font-size: 0.82rem;
   color: var(--accent);
@@ -253,6 +270,19 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   padding: 0.25rem 0.55rem;
 }
 .item-links a:hover { background: var(--accent-soft); border-color: var(--accent-soft); }
+
+.link-btn {
+  font-size: 0.82rem;
+  font-family: inherit;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.25rem 0.55rem;
+  cursor: pointer;
+  color: var(--muted);
+}
+.link-btn:hover { background: var(--bg); }
+.link-btn-muted:hover { color: var(--essential); border-color: var(--essential-bg); background: var(--essential-bg); }
 
 .cost-total-box {
   background: var(--accent-soft);
@@ -266,8 +296,8 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 .tag-cost {
   display: inline-block;
   font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text);
+  font-weight: 700;
+  color: var(--success);
   margin-left: 0.35rem;
 }
 .tag-cost-varies { color: var(--muted); font-style: italic; font-weight: 400; }

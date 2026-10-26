@@ -63,13 +63,20 @@ function populateForm(h) {
   });
 }
 
+// Item names carry planning detail in parentheses ("Rice (dry, long-life)") that
+// makes a poor search query — strip it down to the searchable part.
+function searchTerm(itemName) {
+  return itemName.replace(/\([^)]*\)/g, '').split(/[—–]/)[0].replace(/\s+/g, ' ').trim();
+}
+
 function localSearchUrl(itemName, postcode) {
-  const q = postcode ? `${itemName} shop near ${postcode}` : `${itemName} shop near me`;
+  const term = searchTerm(itemName);
+  const q = postcode ? `${term} shop near ${postcode}` : `${term} shop near me`;
   return `https://www.google.com/maps/search/${encodeURIComponent(q)}`;
 }
 
 function onlineSearchUrl(itemName) {
-  return `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(itemName)}`;
+  return `https://www.amazon.co.uk/s?k=${encodeURIComponent(searchTerm(itemName))}`;
 }
 
 function itemKey(catId, itemName) {
@@ -233,7 +240,7 @@ function renderPlan(h) {
       onlineLink.href = onlineSearchUrl(item.name);
       onlineLink.target = '_blank';
       onlineLink.rel = 'noopener';
-      onlineLink.textContent = 'Compare online';
+      onlineLink.textContent = 'Search Amazon';
 
       const removeBtn = document.createElement('button');
       removeBtn.type = 'button';
@@ -266,7 +273,7 @@ function renderPlan(h) {
   totalBox.innerHTML = `
     <h3>Estimated total cost</h3>
     <p class="total-figure">~£${grandTotal.toFixed(2)}</p>
-    <p class="note">Rough UK high-street planning estimate${hasUnpriced ? ' (excludes medication and cash reserve, which vary per household)' : ''}. Use "Find near me" / "Compare online" on each item to check real prices — you likely already own some of this (torches, blankets, pans), which will bring the real cost down.</p>
+    <p class="note">Rough UK high-street planning estimate${hasUnpriced ? ' (excludes medication and cash reserve, which vary per household)' : ''}. Use "Find near me" / "Search Amazon" on each item to check real prices — you likely already own some of this (torches, blankets, pans), which will bring the real cost down.</p>
   `;
 
   renderMaintenance();

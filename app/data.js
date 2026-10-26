@@ -5,7 +5,7 @@
 // (water, food, warmth/light, power, first aid, documents, pets).
 //
 // Costs are rough UK high-street planning estimates (GBP), not live prices —
-// use the "Compare online" / "Find near me" links on each item to check
+// use the "Search Amazon" / "Find near me" links on each item to check
 // actual current prices. An item with cost: null is excluded from totals
 // (e.g. cash reserve isn't a "purchase", medication cost is unpredictable).
 

@@ -23,6 +23,15 @@
 
 * { box-sizing: border-box; }
 
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -32,7 +41,7 @@ body {
   font-size: 15.5px;
 }
 
-a { color: var(--accent); }
+a { color: var(--accent); transition: color 0.15s ease; }
 a:hover { color: var(--accent-dark); }
 
 /* Header */
@@ -105,6 +114,10 @@ main#app {
   margin-top: 1.5rem;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
 }
+
+/* Applied via JS (with a reflow retrigger) when an element persists across
+   renders — e.g. swapping form <-> plan, or the cost total updating. */
+.enter-anim { animation: fadeSlideUp 0.4s ease backwards; }
 .panel h2 {
   font-size: 1.25rem;
   margin: 0 0 1.1rem;
@@ -134,6 +147,7 @@ fieldset.field > legend {
   font-family: inherit;
   background: #fff;
   color: var(--text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .field select { max-width: 32em; }
 .field input:focus, .field select:focus, button:focus {
@@ -151,7 +165,12 @@ fieldset.field > legend {
   border-radius: var(--radius-sm);
   padding: 1.1rem 1.25rem 0.2rem;
   margin-bottom: 1.5rem;
+  animation: fadeSlideUp 0.4s ease backwards;
 }
+.form-section--household { animation-delay: 0.03s; }
+.form-section--planning  { animation-delay: 0.08s; }
+.form-section--food      { animation-delay: 0.13s; }
+.form-section--power     { animation-delay: 0.18s; }
 .form-section .field:last-child { margin-bottom: 1.1rem; }
 .form-section__label {
   margin: 0 0 1rem;
@@ -200,23 +219,42 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
 .btn-primary {
   background: linear-gradient(135deg, #2f6fed, #7c3aed);
   color: white;
+  box-shadow: 0 1px 2px rgba(47, 111, 237, 0.25);
 }
-.btn-primary:hover { background: linear-gradient(135deg, #1d4fc4, #6425d0); }
+.btn-primary:hover { background: linear-gradient(135deg, #1d4fc4, #6425d0); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(47, 111, 237, 0.3); }
+.btn-primary:active { transform: translateY(0); box-shadow: 0 1px 2px rgba(47, 111, 237, 0.25); }
 
 .btn-secondary {
   background: var(--card);
   color: var(--text);
   border-color: var(--border);
 }
-.btn-secondary:hover { background: var(--bg); }
+.btn-secondary:hover { background: var(--bg); transform: translateY(-1px); }
+.btn-secondary:active { transform: translateY(0); }
 
 .plan-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
 
-.category { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--border); }
+.category {
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border);
+  animation: fadeSlideUp 0.35s ease backwards;
+}
+.category:nth-of-type(1) { animation-delay: 0.02s; }
+.category:nth-of-type(2) { animation-delay: 0.06s; }
+.category:nth-of-type(3) { animation-delay: 0.10s; }
+.category:nth-of-type(4) { animation-delay: 0.14s; }
+.category:nth-of-type(5) { animation-delay: 0.18s; }
+.category:nth-of-type(6) { animation-delay: 0.22s; }
+.category:nth-of-type(7) { animation-delay: 0.26s; }
+.category:nth-of-type(8) { animation-delay: 0.30s; }
+.category:nth-of-type(9) { animation-delay: 0.34s; }
+.category:nth-of-type(n+10) { animation-delay: 0.38s; }
 .category h3 {
   margin: 0 0 0.3rem;
   font-size: 1.05rem;
@@ -252,12 +290,14 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   gap: 0.5rem;
 }
 .item:last-child { border-bottom: none; }
+.item { transition: background-color 0.2s ease; }
 .item.done { background: var(--done-bg); }
-.item.done span strong { text-decoration: line-through; color: var(--muted); }
+.item.done span strong { text-decoration: line-through; color: var(--muted); transition: color 0.2s ease; }
 .item.removed {
   background: var(--bg);
   color: var(--muted);
   font-size: 0.88rem;
+  animation: fadeSlideUp 0.25s ease;
 }
 .item.removed strong { font-weight: 500; text-decoration: line-through; }
 
@@ -308,8 +348,9 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.25rem 0.55rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
-.item-links a:hover { background: var(--accent-soft); border-color: var(--accent-soft); }
+.item-links a:hover { background: var(--accent-soft); border-color: var(--accent-soft); transform: translateY(-1px); }
 
 .link-btn {
   font-size: 0.82rem;
@@ -320,8 +361,9 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   padding: 0.25rem 0.55rem;
   cursor: pointer;
   color: var(--muted);
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
-.link-btn:hover { background: var(--bg); }
+.link-btn:hover { background: var(--bg); transform: translateY(-1px); }
 .link-btn-muted:hover { color: var(--essential); border-color: var(--essential-bg); background: var(--essential-bg); }
 
 .cost-total-box {

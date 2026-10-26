@@ -83,6 +83,14 @@ function itemKey(catId, itemName) {
   return `${catId}::${itemName}`;
 }
 
+// Replays the fade/slide-in animation on an element that persists across
+// renders (CSS animations don't restart just because content changed).
+function playEnter(el) {
+  el.classList.remove('enter-anim');
+  void el.offsetWidth; // force reflow
+  el.classList.add('enter-anim');
+}
+
 const TIER_LABELS = {
   minimum: 'Minimum',
   comfortable: 'Comfortable',
@@ -275,6 +283,7 @@ function renderPlan(h) {
     <p class="total-figure">~£${grandTotal.toFixed(2)}</p>
     <p class="note">Rough UK high-street planning estimate${hasUnpriced ? ' (excludes medication and cash reserve, which vary per household)' : ''}. Use "Find near me" / "Search Amazon" on each item to check real prices — you likely already own some of this (torches, blankets, pans), which will bring the real cost down.</p>
   `;
+  playEnter(totalBox);
 
   renderMaintenance();
 }
@@ -300,11 +309,13 @@ document.getElementById('intake-form').addEventListener('submit', (e) => {
   renderPlan(household);
   document.getElementById('intake').classList.add('hidden');
   document.getElementById('plan').classList.remove('hidden');
+  playEnter(document.getElementById('plan'));
 });
 
 document.getElementById('edit-household').addEventListener('click', () => {
   document.getElementById('plan').classList.add('hidden');
   document.getElementById('intake').classList.remove('hidden');
+  playEnter(document.getElementById('intake'));
 });
 
 if (state.household) {
@@ -312,4 +323,7 @@ if (state.household) {
   renderPlan(state.household);
   document.getElementById('intake').classList.add('hidden');
   document.getElementById('plan').classList.remove('hidden');
+  playEnter(document.getElementById('plan'));
+} else {
+  playEnter(document.getElementById('intake'));
 }

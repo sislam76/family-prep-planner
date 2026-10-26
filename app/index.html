@@ -22,100 +22,116 @@
     <h2>Tell us about your household</h2>
     <form id="intake-form">
 
-      <div class="field">
-        <label for="household-size">How many people in your household?</label>
-        <input type="number" id="household-size" min="1" max="20" value="4" required />
+      <div class="form-section form-section--household">
+        <p class="form-section__label">Your household</p>
+
+        <div class="field">
+          <label for="household-size">How many people in your household?</label>
+          <input type="number" id="household-size" min="1" max="20" value="4" required />
+        </div>
+
+        <div class="field">
+          <label for="children">How many are children under 5?</label>
+          <input type="number" id="children" min="0" max="20" value="0" />
+        </div>
+
+        <div class="field">
+          <label for="elderly">How many are elderly or have additional medical needs?</label>
+          <input type="number" id="elderly" min="0" max="20" value="0" />
+        </div>
+
+        <div class="field">
+          <label for="pets">How many pets?</label>
+          <input type="number" id="pets" min="0" max="20" value="0" />
+        </div>
       </div>
 
-      <div class="field">
-        <label for="children">How many are children under 5?</label>
-        <input type="number" id="children" min="0" max="20" value="0" />
+      <div class="form-section form-section--planning">
+        <p class="form-section__label">How prepared, and where it'll live</p>
+
+        <div class="field">
+          <label for="tier">How prepared do you want to be?</label>
+          <select id="tier">
+            <option value="minimum">Minimum — essentials only, lowest cost</option>
+            <option value="comfortable" selected>Comfortable — essentials plus the things that make it bearable</option>
+            <option value="luxury">Thorough — everything, no shortcuts</option>
+          </select>
+          <p class="field-hint">Minimum covers the basics only. Comfortable adds extras your space allows (e.g. UHT milk, a solar panel, snacks). Thorough includes everything regardless of space. This is the biggest lever on total cost — start at Minimum if budget is tight, you can always add more later.</p>
+        </div>
+
+        <div class="field">
+          <label for="space">How much storage space can you set aside?</label>
+          <select id="space">
+            <option value="tiny">Tiny — one small box or bag only</option>
+            <option value="small" selected>Small — one cupboard shelf</option>
+            <option value="medium">Medium — part of a cupboard/understairs</option>
+            <option value="large">Large — a spare cupboard, garage shelf, or more</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="storageLocation">Where will you actually store it?</label>
+          <select id="storageLocation">
+            <option value="indoor" selected>Inside the house (cupboard, wardrobe, under stairs — normal room temperature)</option>
+            <option value="loft">Loft / attic</option>
+            <option value="outbuilding">Garage / shed / outbuilding</option>
+          </select>
+          <p class="field-hint">Lofts and garages/sheds swing hot and cold and can get damp — that damages medication, batteries, formula and some food. We'll flag items that shouldn't go out there.</p>
+        </div>
+
+        <div class="field">
+          <label for="duration">How many days do you want to be covered for?</label>
+          <input type="number" id="duration" min="1" max="30" value="3" required />
+          <p class="field-hint">UK guidance targets about 72 hours. For comparison, Sweden's MSB and Germany's BBK advise 1-2 weeks of self-sufficiency, and Nordic civil defence guidance (Norway, Finland) targets 3 days minimum, with some now recommending up to a week. Pick what feels realistic for you — longer just means more stock.</p>
+        </div>
       </div>
 
-      <div class="field">
-        <label for="elderly">How many are elderly or have additional medical needs?</label>
-        <input type="number" id="elderly" min="0" max="20" value="0" />
+      <div class="form-section form-section--food">
+        <p class="form-section__label">Food</p>
+
+        <div class="field">
+          <label for="cuisine">What food would your household actually want to eat during a disruption?</label>
+          <select id="cuisine">
+            <option value="general" selected>No particular preference — Western-style tinned/ration food is fine</option>
+            <option value="south-asian">South Asian (rice, lentils/daal, chapati flour, ghee, spices)</option>
+            <option value="middle-eastern">Middle Eastern (rice, dates, chickpeas/hummus, flatbread, olive oil)</option>
+            <option value="east-southeast-asian">East/Southeast Asian (rice, noodles, soy sauce, dried/tinned fish)</option>
+            <option value="caribbean-african">Caribbean / African (rice, beans, plantain flour, tinned callaloo/stews)</option>
+          </select>
+          <p class="field-hint">Military-style ration packs and plain tinned food cover calories, but in a multi-day disruption, familiar food matters for comfort and for kids actually eating. We'll suggest shelf-stable staples that match this.</p>
+        </div>
+
+        <fieldset class="field">
+          <legend>Dietary / religious needs (select all that apply)</legend>
+          <label class="checkbox"><input type="checkbox" value="halal" name="diet" /> Halal</label>
+          <label class="checkbox"><input type="checkbox" value="vegetarian" name="diet" /> Vegetarian</label>
+          <label class="checkbox"><input type="checkbox" value="vegan" name="diet" /> Vegan</label>
+          <label class="checkbox"><input type="checkbox" value="gluten-free" name="diet" /> Gluten-free</label>
+          <label class="checkbox"><input type="checkbox" value="nut-allergy" name="diet" /> Nut allergy</label>
+          <label class="checkbox"><input type="checkbox" value="infant-formula" name="diet" /> Infant formula / baby food needed</label>
+        </fieldset>
       </div>
 
-      <div class="field">
-        <label for="pets">How many pets?</label>
-        <input type="number" id="pets" min="0" max="20" value="0" />
-      </div>
+      <div class="form-section form-section--power">
+        <p class="form-section__label">Cooking &amp; power</p>
 
-      <div class="field">
-        <label for="tier">How prepared do you want to be?</label>
-        <select id="tier">
-          <option value="minimum">Minimum — essentials only, lowest cost</option>
-          <option value="comfortable" selected>Comfortable — essentials plus the things that make it bearable</option>
-          <option value="luxury">Thorough — everything, no shortcuts</option>
-        </select>
-        <p class="field-hint">Minimum covers the basics only. Comfortable adds extras your space allows (e.g. UHT milk, a solar panel, snacks). Thorough includes everything regardless of space. This is the biggest lever on total cost — start at Minimum if budget is tight, you can always add more later.</p>
-      </div>
+        <div class="field">
+          <label for="cooking">If gas and electricity both go out, how would you heat food/water?</label>
+          <select id="cooking">
+            <option value="camping-stove">Camping/gas canister stove</option>
+            <option value="bbq">Outdoor BBQ (charcoal/gas)</option>
+            <option value="none" selected>No backup yet — recommend one</option>
+          </select>
+        </div>
 
-      <div class="field">
-        <label for="space">How much storage space can you set aside?</label>
-        <select id="space">
-          <option value="tiny">Tiny — one small box or bag only</option>
-          <option value="small" selected>Small — one cupboard shelf</option>
-          <option value="medium">Medium — part of a cupboard/understairs</option>
-          <option value="large">Large — a spare cupboard, garage shelf, or more</option>
-        </select>
-      </div>
+        <div class="field">
+          <label for="devices">How many phones/devices need charging daily?</label>
+          <input type="number" id="devices" min="0" max="20" value="2" />
+        </div>
 
-      <div class="field">
-        <label for="storageLocation">Where will you actually store it?</label>
-        <select id="storageLocation">
-          <option value="indoor" selected>Inside the house (cupboard, wardrobe, under stairs — normal room temperature)</option>
-          <option value="loft">Loft / attic</option>
-          <option value="outbuilding">Garage / shed / outbuilding</option>
-        </select>
-        <p class="field-hint">Lofts and garages/sheds swing hot and cold and can get damp — that damages medication, batteries, formula and some food. We'll flag items that shouldn't go out there.</p>
-      </div>
-
-      <div class="field">
-        <label for="duration">How many days do you want to be covered for?</label>
-        <input type="number" id="duration" min="1" max="30" value="3" required />
-        <p class="field-hint">UK guidance targets about 72 hours. For comparison, Sweden's MSB and Germany's BBK advise 1-2 weeks of self-sufficiency, and Nordic civil defence guidance (Norway, Finland) targets 3 days minimum, with some now recommending up to a week. Pick what feels realistic for you — longer just means more stock.</p>
-      </div>
-
-      <div class="field">
-        <label for="cuisine">What food would your household actually want to eat during a disruption?</label>
-        <select id="cuisine">
-          <option value="general" selected>No particular preference — Western-style tinned/ration food is fine</option>
-          <option value="south-asian">South Asian (rice, lentils/daal, chapati flour, ghee, spices)</option>
-          <option value="middle-eastern">Middle Eastern (rice, dates, chickpeas/hummus, flatbread, olive oil)</option>
-          <option value="east-southeast-asian">East/Southeast Asian (rice, noodles, soy sauce, dried/tinned fish)</option>
-          <option value="caribbean-african">Caribbean / African (rice, beans, plantain flour, tinned callaloo/stews)</option>
-        </select>
-        <p class="field-hint">Military-style ration packs and plain tinned food cover calories, but in a multi-day disruption, familiar food matters for comfort and for kids actually eating. We'll suggest shelf-stable staples that match this.</p>
-      </div>
-
-      <fieldset class="field">
-        <legend>Dietary / religious needs (select all that apply)</legend>
-        <label class="checkbox"><input type="checkbox" value="halal" name="diet" /> Halal</label>
-        <label class="checkbox"><input type="checkbox" value="vegetarian" name="diet" /> Vegetarian</label>
-        <label class="checkbox"><input type="checkbox" value="vegan" name="diet" /> Vegan</label>
-        <label class="checkbox"><input type="checkbox" value="gluten-free" name="diet" /> Gluten-free</label>
-        <label class="checkbox"><input type="checkbox" value="nut-allergy" name="diet" /> Nut allergy</label>
-        <label class="checkbox"><input type="checkbox" value="infant-formula" name="diet" /> Infant formula / baby food needed</label>
-      </fieldset>
-
-      <div class="field">
-        <label for="cooking">If gas and electricity both go out, how would you heat food/water?</label>
-        <select id="cooking">
-          <option value="camping-stove">Camping/gas canister stove</option>
-          <option value="bbq">Outdoor BBQ (charcoal/gas)</option>
-          <option value="none" selected>No backup yet — recommend one</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label for="devices">How many phones/devices need charging daily?</label>
-        <input type="number" id="devices" min="0" max="20" value="2" />
-      </div>
-
-      <div class="field">
-        <label class="checkbox"><input type="checkbox" id="solar" checked /> Include solar recharging (recommended for 3+ day cover, so power banks don't just run out)</label>
+        <div class="field">
+          <label class="checkbox"><input type="checkbox" id="solar" checked /> Include solar recharging (recommended for 3+ day cover, so power banks don't just run out)</label>
+        </div>
       </div>
 
       <div class="field">

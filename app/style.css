@@ -144,6 +144,29 @@ fieldset.field > legend {
 
 .field-hint { color: var(--muted); font-size: 0.85rem; margin: 0.45rem 0 0; max-width: 42em; }
 
+.form-section {
+  background: var(--section-tint, var(--bg));
+  border: 1px solid var(--section-border, var(--border));
+  border-left: 4px solid var(--section-color, var(--accent));
+  border-radius: var(--radius-sm);
+  padding: 1.1rem 1.25rem 0.2rem;
+  margin-bottom: 1.5rem;
+}
+.form-section .field:last-child { margin-bottom: 1.1rem; }
+.form-section__label {
+  margin: 0 0 1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--section-color, var(--accent));
+}
+
+.form-section--household { --section-color: #16a34a; --section-tint: #f1faf4; --section-border: #d3efdc; }
+.form-section--planning  { --section-color: #9333ea; --section-tint: #faf5ff; --section-border: #ecd9fb; }
+.form-section--food      { --section-color: #c2540a; --section-tint: #fff6ef; --section-border: #f6ddc4; }
+.form-section--power     { --section-color: #0f7fb8; --section-tint: #eff8fd; --section-border: #c9e8f5; }
+
 fieldset.field {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);

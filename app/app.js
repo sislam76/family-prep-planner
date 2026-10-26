@@ -135,7 +135,7 @@ function renderPlan(h) {
     if (shown.length === 0) return;
 
     const section = document.createElement('section');
-    section.className = 'category';
+    section.className = `category category--${cat.id}`;
 
     const heading = document.createElement('h3');
     heading.textContent = cat.title;

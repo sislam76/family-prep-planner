@@ -37,8 +37,12 @@ a:hover { color: var(--accent-dark); }
 
 /* Header */
 .app-header {
-  background: var(--card);
-  border-bottom: 1px solid var(--border);
+  background-color: var(--card);
+  background-image: linear-gradient(90deg, #2f6fed, #7c3aed 50%, #e8763c);
+  background-size: 100% 3px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  padding-bottom: 3px;
 }
 .app-header__bar {
   max-width: 760px;
@@ -175,10 +179,10 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   font-family: inherit;
 }
 .btn-primary {
-  background: var(--accent);
+  background: linear-gradient(135deg, #2f6fed, #7c3aed);
   color: white;
 }
-.btn-primary:hover { background: var(--accent-dark); }
+.btn-primary:hover { background: linear-gradient(135deg, #1d4fc4, #6425d0); }
 
 .btn-secondary {
   background: var(--card);
@@ -193,11 +197,24 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 .category h3 {
   margin: 0 0 0.3rem;
   font-size: 1.05rem;
-  color: var(--accent-dark);
+  color: var(--cat-color, var(--accent-dark));
   font-weight: 700;
   padding-left: 0.65rem;
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--cat-color, var(--accent));
 }
+
+/* One accent colour per category — breaks up the monotony of a single blue. */
+.category--water     { --cat-color: #0f7fb8; }
+.category--food       { --cat-color: #c2540a; }
+.category--cooking    { --cat-color: #b5541f; }
+.category--power      { --cat-color: #9333ea; }
+.category--warmth     { --cat-color: #d6336c; }
+.category--health     { --cat-color: #0d9488; }
+.category--documents  { --cat-color: #4338ca; }
+.category--children   { --cat-color: #16a34a; }
+.category--elderly    { --cat-color: #0f7fb8; }
+.category--wellbeing  { --cat-color: #c2410c; }
+.category--pets       { --cat-color: #16a34a; }
 .category-note, .diet-note { color: var(--muted); font-size: 0.88rem; margin: 0.2rem 0 0.9rem; max-width: 42em; }
 .diet-note { color: #8a5a1f; }
 
@@ -305,8 +322,8 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 .category-subtotal {
   text-align: right;
   font-size: 0.85rem;
-  color: var(--muted);
-  font-weight: 600;
+  color: var(--cat-color, var(--muted));
+  font-weight: 700;
   margin: 0.7rem 0 0;
 }
 

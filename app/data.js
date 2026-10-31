@@ -9,11 +9,14 @@
 // actual current prices. An item with cost: null is excluded from totals
 // (e.g. cash reserve isn't a "purchase", medication cost is unpredictable).
 
+// Essentials are always shown regardless of space (a kit missing an essential
+// isn't a smaller kit, it's a broken one). These limits cap how many
+// *optional* extras get added on top, per category, at the "comfortable" tier.
 const SPACE_LIMITS = {
-  tiny: 1,   // only the single most essential item per category
+  tiny: 0,
   small: 3,
   medium: 6,
-  large: 99
+  large: Infinity
 };
 
 const CATEGORIES = [
@@ -52,7 +55,6 @@ const CATEGORIES = [
         qty: (h) => h.diet.includes('infant-formula') ? `${h.duration} days supply` : null,
         cost: (h) => h.duration * 10,
         essential: true,
-        conditional: 'infant-formula',
         climateSensitive: true
       },
       {
@@ -70,7 +72,7 @@ const CATEGORIES = [
       { name: 'Crackers / crispbread', qty: (h) => `${h.people} packs`, cost: (h) => h.people * 1.5, essential: false, showIf: (h) => h.cuisine === 'general' },
 
       // South Asian staples
-      { name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'south-asian' },
+      { id: 'rice-south-asian', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'south-asian' },
       { name: 'Dried lentils/daal (chana, masoor, moong)', qty: (h) => `${h.duration} days worth`, cost: () => 4, essential: true, showIf: (h) => h.cuisine === 'south-asian' },
       { name: 'Chapati/roti flour (atta) — no-cook flatbread not possible, but usable once stove is set up', qty: () => '1 bag', cost: () => 3, essential: false, showIf: (h) => h.cuisine === 'south-asian' },
       { name: 'Cooking oil or ghee (small bottle, long-life)', qty: () => '1', cost: () => 4, essential: true, showIf: (h) => h.cuisine === 'south-asian' },
@@ -80,7 +82,7 @@ const CATEGORIES = [
       { name: 'Tea (loose or bags) + powdered/UHT milk', qty: () => '1 box', cost: () => 4, essential: false, showIf: (h) => h.cuisine === 'south-asian' },
 
       // Middle Eastern staples
-      { name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'middle-eastern' },
+      { id: 'rice-middle-eastern', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'middle-eastern' },
       { name: 'Tinned chickpeas / fava beans (ful)', qty: (h) => `${h.people * h.duration} tins`, cost: (h) => h.people * h.duration * 1, essential: true, showIf: (h) => h.cuisine === 'middle-eastern' },
       { name: 'Dates (very high energy, no prep needed, culturally familiar)', qty: (h) => `${h.people} portions`, cost: (h) => h.people * 2, essential: true, showIf: (h) => h.cuisine === 'middle-eastern' },
       { name: 'Flatbread (long-life/frozen, or flour to make more once cooking is possible)', qty: () => '1 pack or bag', cost: () => 2, essential: false, showIf: (h) => h.cuisine === 'middle-eastern' },
@@ -88,14 +90,14 @@ const CATEGORIES = [
       { name: 'Tinned/jarred hummus or tahini', qty: () => '1-2', cost: () => 3, essential: false, showIf: (h) => h.cuisine === 'middle-eastern' },
 
       // East/Southeast Asian staples
-      { name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'east-southeast-asian' },
+      { id: 'rice-east-southeast-asian', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'east-southeast-asian' },
       { name: 'Instant/dried noodles', qty: (h) => `${h.people * h.duration} packs`, cost: (h) => h.people * h.duration * 0.5, essential: true, showIf: (h) => h.cuisine === 'east-southeast-asian' },
       { name: 'Soy sauce / seasoning sachets', qty: () => '1 bottle', cost: () => 2, essential: false, showIf: (h) => h.cuisine === 'east-southeast-asian' },
       { name: 'Tinned or dried fish', qty: (h) => `${h.people * h.duration} portions`, cost: (h) => h.people * h.duration * 1.2, essential: false, showIf: (h) => h.cuisine === 'east-southeast-asian' },
       { name: 'Seaweed snacks / dried vegetables (long-life, familiar)', qty: () => '1 pack', cost: () => 2, essential: false, showIf: (h) => h.cuisine === 'east-southeast-asian' },
 
       // Caribbean / African staples
-      { name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'caribbean-african' },
+      { id: 'rice-caribbean-african', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'caribbean-african' },
       { name: 'Tinned beans/peas (kidney, black-eyed, gungo)', qty: (h) => `${h.people * h.duration} tins`, cost: (h) => h.people * h.duration * 1, essential: true, showIf: (h) => h.cuisine === 'caribbean-african' },
       { name: 'Plantain flour or tinned plantain', qty: () => '1', cost: () => 2, essential: false, showIf: (h) => h.cuisine === 'caribbean-african' },
       { name: 'Tinned callaloo / stewed vegetables', qty: (h) => `${h.people} tins`, cost: (h) => h.people * 1.5, essential: false, showIf: (h) => h.cuisine === 'caribbean-african' },
@@ -121,7 +123,7 @@ const CATEGORIES = [
         qty: (h) => {
           const minutesNeeded = h.people * h.duration * 45;
           const canisters = Math.max(1, Math.ceil(minutesNeeded / 60));
-          return `${canisters} small canisters (~1hr burn time each) — plan ${minutesNeeded} mins total use`;
+          return `${canisters} small canister${canisters === 1 ? '' : 's'} (~1hr burn time each) — plan ${minutesNeeded} mins total use`;
         },
         cost: (h) => {
           const minutesNeeded = h.people * h.duration * 45;
@@ -131,9 +133,20 @@ const CATEGORIES = [
         essential: true,
         showIf: (h) => h.cooking === 'none' || h.cooking === 'camping-stove'
       },
-      { name: 'Windproof lighter / waterproof matches', qty: () => '1', cost: () => 2, essential: true },
+      {
+        name: 'Windproof lighter / waterproof matches',
+        qty: () => '1',
+        cost: () => 2,
+        essential: true
+      },
       { name: 'Charcoal/gas BBQ + fuel (if you already have one)', qty: () => 'top up fuel supply', cost: () => 10, essential: false, showIf: (h) => h.cooking === 'bbq' },
-      { name: 'Heatproof pan suitable for camping stove', qty: () => '1', cost: () => 12, essential: true }
+      {
+        name: 'Heatproof pan suitable for camping stove',
+        qty: () => '1',
+        cost: () => 12,
+        essential: true,
+        showIf: (h) => h.cooking === 'none' || h.cooking === 'camping-stove'
+      }
     ]
   },
   {
@@ -145,9 +158,10 @@ const CATEGORIES = [
       { name: 'Spare batteries for torches', qty: (h) => `${h.people * 2}`, cost: (h) => h.people * 2 * 0.5, essential: true, climateSensitive: true },
       {
         name: 'Charging cables for every device (match your actual connectors — USB-C, Lightning, micro-USB)',
-        qty: (h) => `${Math.max(1, h.devices)}`,
-        cost: (h) => Math.max(1, h.devices) * 3,
-        essential: true
+        qty: (h) => `${h.devices}`,
+        cost: (h) => h.devices * 3,
+        essential: true,
+        showIf: (h) => h.devices > 0
       },
       {
         name: 'Power bank / battery pack for phones',
@@ -156,13 +170,14 @@ const CATEGORIES = [
         // 3 real phone charges per pack, not the ~5 the mAh number implies.
         qty: (h) => {
           const chargesNeeded = h.devices * h.duration;
+          let packs;
           if (h.solar) {
             const bufferCharges = h.devices * 1.5;
-            const packs = Math.max(1, Math.ceil(bufferCharges / 3));
-            return `${packs} x 20,000mAh power bank (1.5-day buffer; topped up daily by solar panel below)`;
+            packs = Math.max(1, Math.ceil(bufferCharges / 3));
+            return `${packs} x 20,000mAh power bank${packs === 1 ? '' : 's'} (1.5-day buffer; topped up daily by solar panel below)`;
           }
-          const packs = Math.max(1, Math.ceil(chargesNeeded / 3));
-          return `${packs} x 20,000mAh power bank (covers all ${chargesNeeded} charges with no recharging — no solar selected)`;
+          packs = Math.max(1, Math.ceil(chargesNeeded / 3));
+          return `${packs} x 20,000mAh power bank${packs === 1 ? '' : 's'} (covers all ${chargesNeeded} charges with no recharging — no solar selected)`;
         },
         cost: (h) => {
           const chargesNeeded = h.devices * h.duration;
@@ -176,20 +191,20 @@ const CATEGORIES = [
           return packs * 25;
         },
         essential: true,
-        climateSensitive: true
+        climateSensitive: true,
+        showIf: (h) => h.devices > 0
       },
       {
         name: 'Foldable solar panel (to recharge the power bank without mains power)',
         // A 20-30W foldable panel in reasonable UK daylight will fully recharge one
         // 20,000mAh pack in roughly 5-6 hours of direct sun.
         qty: (h) => {
-          const chargesPerDay = h.devices;
-          const panels = chargesPerDay > 6 ? 2 : 1;
-          return `${panels} x 20-30W foldable solar panel (recharges one power bank in ~5-6 hrs direct sun — cloudy days will be slower, keep the buffer pack above as backup)`;
+          const panels = h.devices > 6 ? 2 : 1;
+          return `${panels} x 20-30W foldable solar panel${panels === 1 ? '' : 's'} (recharges one power bank in ~5-6 hrs direct sun — cloudy days will be slower, keep the buffer pack above as backup)`;
         },
         cost: (h) => (h.devices > 6 ? 2 : 1) * 35,
         essential: true,
-        showIf: (h) => h.solar
+        showIf: (h) => h.solar && h.devices > 0
       },
       { name: 'Battery or crank-powered radio (for emergency broadcasts)', qty: () => '1', cost: () => 20, essential: true },
       { name: 'Candles + holders (use with care, ventilation)', qty: () => 'small supply', cost: () => 5, essential: false }
@@ -222,6 +237,12 @@ const CATEGORIES = [
       { name: 'Wet wipes', qty: (h) => `${h.people} packs`, cost: (h) => h.people * 1.5, essential: true },
       { name: 'Bin bags (for waste if bins aren\'t collected)', qty: () => '1 roll', cost: () => 2, essential: false },
       { name: 'Face masks', qty: (h) => `${h.people} packs`, cost: (h) => h.people * 3, essential: false },
+      {
+        name: 'Cool bag or ice packs (if anyone takes refrigerated medication, e.g. insulin)',
+        qty: () => '1',
+        cost: () => 10,
+        essential: false
+      },
       {
         name: 'Bucket with sealable lid + bin bags (emergency toilet if water/sewage is disrupted)',
         qty: () => '1',
@@ -275,7 +296,7 @@ const CATEGORIES = [
     note: null,
     showIf: (h) => h.pets > 0,
     items: [
-      { name: 'Pet food', qty: (h) => `${h.pets * h.duration} days supply`, cost: (h) => h.pets * h.duration * 1.5, essential: true },
+      { name: 'Pet food', qty: (h) => `${h.pets * h.duration} portions (covers ${h.duration} day${h.duration === 1 ? '' : 's'})`, cost: (h) => h.pets * h.duration * 1.5, essential: true },
       { name: 'Water bowl + extra water allowance', qty: (h) => `+${h.pets * h.duration * 1} litres`, cost: () => 5, essential: true }
     ]
   }

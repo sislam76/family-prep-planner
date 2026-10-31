@@ -62,22 +62,13 @@ a:hover { color: var(--accent-dark); }
   gap: 0.75rem;
   flex-wrap: wrap;
 }
+.app-header__icon { font-size: 1.15rem; line-height: 1; }
 .app-header__name {
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--text);
   margin-right: auto;
 }
-
-.tag {
-  display: inline-block;
-  font-weight: 600;
-  font-size: 0.72rem;
-  letter-spacing: 0.2px;
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
-}
-.tag--grey { background: var(--warn-bg); color: var(--warn-text); }
 
 main#app {
   max-width: 760px;
@@ -238,23 +229,18 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 .btn-secondary:active { transform: translateY(0); }
 
 .plan-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.plan-header__actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 
 .category {
   margin-top: 1.6rem;
   padding-top: 1.2rem;
   border-top: 1px solid var(--border);
-  animation: fadeSlideUp 0.35s ease backwards;
+  /* A single short, uniform fade — no per-category stagger. On a long
+     Thorough-tier list, a stagger meant the later categories sat invisible
+     for the better part of a second, which reads as a loading bug, not
+     polish, on something people are trying to scan quickly. */
+  animation: fadeSlideUp 0.3s ease backwards;
 }
-.category:nth-of-type(1) { animation-delay: 0.02s; }
-.category:nth-of-type(2) { animation-delay: 0.06s; }
-.category:nth-of-type(3) { animation-delay: 0.10s; }
-.category:nth-of-type(4) { animation-delay: 0.14s; }
-.category:nth-of-type(5) { animation-delay: 0.18s; }
-.category:nth-of-type(6) { animation-delay: 0.22s; }
-.category:nth-of-type(7) { animation-delay: 0.26s; }
-.category:nth-of-type(8) { animation-delay: 0.30s; }
-.category:nth-of-type(9) { animation-delay: 0.34s; }
-.category:nth-of-type(n+10) { animation-delay: 0.38s; }
 .category h3 {
   margin: 0 0 0.3rem;
   font-size: 1.05rem;
@@ -262,9 +248,14 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   font-weight: 700;
   padding-left: 0.65rem;
   border-left: 3px solid var(--cat-color, var(--accent));
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
+.category-icon { font-size: 1.1rem; line-height: 1; }
 
-/* One accent colour per category — breaks up the monotony of a single blue. */
+/* One accent colour per category — breaks up the monotony of a single blue.
+   Each colour is distinct (no two categories share a hue). */
 .category--water     { --cat-color: #0f7fb8; }
 .category--food       { --cat-color: #c2540a; }
 .category--cooking    { --cat-color: #b5541f; }
@@ -273,11 +264,21 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 .category--health     { --cat-color: #0d9488; }
 .category--documents  { --cat-color: #4338ca; }
 .category--children   { --cat-color: #16a34a; }
-.category--elderly    { --cat-color: #0f7fb8; }
+.category--elderly    { --cat-color: #b45309; }
 .category--wellbeing  { --cat-color: #c2410c; }
-.category--pets       { --cat-color: #16a34a; }
+.category--pets       { --cat-color: #ca8a04; }
 .category-note, .diet-note { color: var(--muted); font-size: 0.88rem; margin: 0.2rem 0 0.9rem; max-width: 42em; }
 .diet-note { color: #8a5a1f; }
+
+.item-divider {
+  list-style: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  padding: 0.9rem 0 0.3rem;
+}
 
 .item-list { list-style: none; margin: 0; padding: 0; }
 .item {
@@ -293,6 +294,7 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 .item { transition: background-color 0.2s ease; }
 .item.done { background: var(--done-bg); }
 .item.done span strong { text-decoration: line-through; color: var(--muted); transition: color 0.2s ease; }
+.item.done span strong::before { content: "✓ "; color: var(--success); text-decoration: none; font-weight: 700; }
 .item.removed {
   background: var(--bg);
   color: var(--muted);
@@ -342,23 +344,29 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 
 .item-links { display: flex; gap: 0.4rem; white-space: nowrap; align-items: center; }
 .item-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
   font-size: 0.82rem;
   color: var(--accent);
   text-decoration: none;
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 0.25rem 0.55rem;
+  padding: 0.45rem 0.65rem;
   transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 .item-links a:hover { background: var(--accent-soft); border-color: var(--accent-soft); transform: translateY(-1px); }
 
 .link-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
   font-size: 0.82rem;
   font-family: inherit;
   background: none;
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 0.25rem 0.55rem;
+  padding: 0.45rem 0.65rem;
   cursor: pointer;
   color: var(--muted);
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
@@ -373,7 +381,25 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   margin: 1.4rem 0;
 }
 .cost-total-box h3 { margin: 0 0 0.15rem; font-size: 0.9rem; color: var(--accent-dark); font-weight: 700; }
-.total-figure { font-size: 1.75rem; font-weight: 700; margin: 0 0 0.35rem; color: var(--accent-dark); }
+.total-figure { font-size: 1.75rem; font-weight: 700; margin: 0 0 0.1rem; color: var(--accent-dark); }
+.essentials-figure { font-size: 0.85rem; color: var(--accent-dark); opacity: 0.85; margin: 0 0 0.9rem; }
+
+.progress-row { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.7rem; }
+.progress-bar {
+  flex: 1;
+  height: 0.5rem;
+  background: rgba(29, 79, 196, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  min-width: 4rem;
+}
+.progress-bar__fill {
+  height: 100%;
+  background: var(--success);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+.progress-label { font-size: 0.8rem; color: var(--accent-dark); font-weight: 600; white-space: nowrap; }
 
 .tag-cost {
   display: inline-block;
@@ -394,6 +420,7 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
 
 .plan-footer { margin-top: 1.75rem; }
 .note { color: var(--muted); font-size: 0.85rem; }
+#start-over { margin-top: 1rem; }
 
 #maintenance ul { padding-left: 1.2rem; color: var(--muted); font-size: 0.9rem; }
 
@@ -417,4 +444,17 @@ fieldset.field legend { padding: 0 0.3rem; margin-bottom: 0.2rem; font-size: 0.9
   .item-links { width: 100%; }
   .page-title { font-size: 1.5rem; }
   .panel { padding: 1.25rem; }
+}
+
+@media print {
+  .app-header, #intake, .item-links, #edit-household, #print-plan,
+  #start-over, .site-footer, .climate-warning + .category .link-btn {
+    display: none !important;
+  }
+  .link-btn { display: none !important; }
+  body { background: #fff; }
+  .panel { box-shadow: none; border: none; padding: 0; animation: none; }
+  .category, .form-section, .cost-total-box { animation: none; }
+  .item.removed { display: none; }
+  a { color: #000; text-decoration: none; }
 }

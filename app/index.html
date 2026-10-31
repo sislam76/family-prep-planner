@@ -9,6 +9,7 @@
 <body>
 <header class="app-header">
   <div class="app-header__bar">
+    <span class="app-header__icon" aria-hidden="true">🛡️</span>
     <span class="app-header__name">Family Preparedness Planner</span>
   </div>
 </header>
@@ -19,7 +20,7 @@
   <p class="tagline">Based on UK Government "Prepare" guidance — a sensible, realistic kit for a short disruption (power, water, gas, fuel, food supply), scaled to your household.</p>
 
   <section id="intake" class="panel">
-    <h2>Tell us about your household</h2>
+    <h2 id="intake-heading" tabindex="-1">Tell us about your household</h2>
     <form id="intake-form">
 
       <div class="form-section form-section--household">
@@ -52,9 +53,9 @@
         <div class="field">
           <label for="tier">How prepared do you want to be?</label>
           <select id="tier">
-            <option value="minimum">Minimum — essentials only, lowest cost</option>
-            <option value="comfortable" selected>Comfortable — essentials plus the things that make it bearable</option>
-            <option value="luxury">Thorough — everything, no shortcuts</option>
+            <option value="minimum">Minimum — essentials only</option>
+            <option value="comfortable" selected>Comfortable — essentials + a few extras</option>
+            <option value="luxury">Thorough — everything</option>
           </select>
           <p class="field-hint">Minimum covers the basics only. Comfortable adds extras your space allows (e.g. UHT milk, a solar panel, snacks). Thorough includes everything regardless of space. This is the biggest lever on total cost — start at Minimum if budget is tight, you can always add more later.</p>
         </div>
@@ -65,18 +66,18 @@
             <option value="tiny">Tiny — one small box or bag only</option>
             <option value="small" selected>Small — one cupboard shelf</option>
             <option value="medium">Medium — part of a cupboard/understairs</option>
-            <option value="large">Large — a spare cupboard, garage shelf, or more</option>
+            <option value="large">Large — a spare cupboard or more</option>
           </select>
         </div>
 
         <div class="field">
           <label for="storageLocation">Where will you actually store it?</label>
           <select id="storageLocation">
-            <option value="indoor" selected>Inside the house (cupboard, wardrobe, under stairs — normal room temperature)</option>
+            <option value="indoor" selected>Inside the house (normal room temperature)</option>
             <option value="loft">Loft / attic</option>
             <option value="outbuilding">Garage / shed / outbuilding</option>
           </select>
-          <p class="field-hint">Lofts and garages/sheds swing hot and cold and can get damp — that damages medication, batteries, formula and some food. We'll flag items that shouldn't go out there.</p>
+          <p class="field-hint">"Inside the house" means a cupboard, wardrobe or under the stairs. Lofts and garages/sheds swing hot and cold and can get damp — that damages medication, batteries, formula and some food. We'll flag items that shouldn't go out there.</p>
         </div>
 
         <div class="field">
@@ -92,13 +93,13 @@
         <div class="field">
           <label for="cuisine">What food would your household actually want to eat during a disruption?</label>
           <select id="cuisine">
-            <option value="general" selected>No particular preference — Western-style tinned/ration food is fine</option>
-            <option value="south-asian">South Asian (rice, lentils/daal, chapati flour, ghee, spices)</option>
-            <option value="middle-eastern">Middle Eastern (rice, dates, chickpeas/hummus, flatbread, olive oil)</option>
-            <option value="east-southeast-asian">East/Southeast Asian (rice, noodles, soy sauce, dried/tinned fish)</option>
-            <option value="caribbean-african">Caribbean / African (rice, beans, plantain flour, tinned callaloo/stews)</option>
+            <option value="general" selected>No particular preference</option>
+            <option value="south-asian">South Asian</option>
+            <option value="middle-eastern">Middle Eastern</option>
+            <option value="east-southeast-asian">East/Southeast Asian</option>
+            <option value="caribbean-african">Caribbean / African</option>
           </select>
-          <p class="field-hint">Military-style ration packs and plain tinned food cover calories, but in a multi-day disruption, familiar food matters for comfort and for kids actually eating. We'll suggest shelf-stable staples that match this.</p>
+          <p class="field-hint">Military-style ration packs and plain tinned food cover calories, but in a multi-day disruption, familiar food matters for comfort and for kids actually eating — we'll suggest shelf-stable staples to match (e.g. South Asian: rice, lentils/daal, ghee. Middle Eastern: rice, dates, chickpeas. East/Southeast Asian: rice, noodles, soy sauce. Caribbean/African: rice, beans, plantain).</p>
         </div>
 
         <fieldset class="field">
@@ -145,18 +146,22 @@
 
   <section id="plan" class="panel hidden">
     <div class="plan-header">
-      <h2>Your preparedness plan</h2>
-      <button id="edit-household" class="btn-secondary">Edit household details</button>
+      <h2 id="plan-heading" tabindex="-1">Your preparedness plan</h2>
+      <div class="plan-header__actions">
+        <button id="edit-household" class="btn-secondary">Edit household details</button>
+        <button id="print-plan" class="btn-secondary">Print / save as PDF</button>
+      </div>
     </div>
     <p id="plan-summary"></p>
 
-    <div id="cost-total" class="cost-total-box"></div>
+    <div id="cost-total" class="cost-total-box" aria-live="polite"></div>
 
     <div id="categories"></div>
 
     <div class="plan-footer">
       <p class="note">Checked items are saved on this device only. Review and refresh perishable items regularly — see maintenance reminders below.</p>
       <div id="maintenance"></div>
+      <button id="start-over" class="link-btn link-btn-muted">Start over (clear saved plan)</button>
     </div>
   </section>
 

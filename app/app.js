@@ -327,3 +327,8 @@ if (state.household) {
 } else {
   playEnter(document.getElementById('intake'));
 }
+
+const lastUpdatedEl = document.getElementById('last-updated');
+if (lastUpdatedEl && typeof LAST_UPDATED !== 'undefined') {
+  lastUpdatedEl.textContent = `Last updated: ${LAST_UPDATED}`;
+}

@@ -67,41 +67,41 @@ const CATEGORIES = [
       },
 
       // General / Western staples
-      { name: 'Long-life snacks (nuts, dried fruit, energy bars)', qty: (h) => `${h.people * h.duration} portions`, cost: (h) => h.people * h.duration * 0.6, essential: false, showIf: (h) => h.cuisine === 'general' },
-      { name: 'Pasta or rice + jarred sauce', qty: (h) => `${h.people} meals worth`, cost: (h) => h.people * 3, essential: false, showIf: (h) => h.cuisine === 'general' },
-      { name: 'Crackers / crispbread', qty: (h) => `${h.people} packs`, cost: (h) => h.people * 1.5, essential: false, showIf: (h) => h.cuisine === 'general' },
+      { name: 'Long-life snacks (nuts, dried fruit, energy bars)', qty: (h) => `${h.people * h.duration} portions`, cost: (h) => h.people * h.duration * 0.6, essential: false, showIf: (h) => h.cuisines.includes('western') },
+      { name: 'Pasta or rice + jarred sauce', qty: (h) => `${h.people} meals worth`, cost: (h) => h.people * 3, essential: false, showIf: (h) => h.cuisines.includes('western') },
+      { name: 'Crackers / crispbread', qty: (h) => `${h.people} packs`, cost: (h) => h.people * 1.5, essential: false, showIf: (h) => h.cuisines.includes('western') },
 
       // South Asian staples
-      { id: 'rice-south-asian', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'south-asian' },
-      { name: 'Dried lentils/daal (chana, masoor, moong)', qty: (h) => `${h.duration} days worth`, cost: () => 4, essential: true, showIf: (h) => h.cuisine === 'south-asian' },
-      { name: 'Chapati/roti flour (atta) — no-cook flatbread not possible, but usable once stove is set up', qty: () => '1 bag', cost: () => 3, essential: false, showIf: (h) => h.cuisine === 'south-asian' },
-      { name: 'Cooking oil or ghee (small bottle, long-life)', qty: () => '1', cost: () => 4, essential: true, showIf: (h) => h.cuisine === 'south-asian' },
-      { name: 'Tinned curry (check halal certification if needed)', qty: (h) => `${h.people * h.duration} tins`, cost: (h) => h.people * h.duration * 1.5, essential: false, showIf: (h) => h.cuisine === 'south-asian' },
-      { name: 'Basic spices already used at home (salt, chilli, turmeric, cumin) in small travel tub', qty: () => '1 set', cost: () => 5, essential: false, showIf: (h) => h.cuisine === 'south-asian' },
-      { name: 'Pickle / chutney (long shelf life, makes plain food edible)', qty: () => '1 jar', cost: () => 2, essential: false, showIf: (h) => h.cuisine === 'south-asian' },
-      { name: 'Tea (loose or bags) + powdered/UHT milk', qty: () => '1 box', cost: () => 4, essential: false, showIf: (h) => h.cuisine === 'south-asian' },
+      { id: 'rice-south-asian', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisines.includes('south-asian') },
+      { name: 'Dried lentils/daal (chana, masoor, moong)', qty: (h) => `${h.duration} days worth`, cost: () => 4, essential: true, showIf: (h) => h.cuisines.includes('south-asian') },
+      { name: 'Chapati/roti flour (atta) — no-cook flatbread not possible, but usable once stove is set up', qty: () => '1 bag', cost: () => 3, essential: false, showIf: (h) => h.cuisines.includes('south-asian') },
+      { name: 'Cooking oil or ghee (small bottle, long-life)', qty: () => '1', cost: () => 4, essential: true, showIf: (h) => h.cuisines.includes('south-asian') },
+      { name: 'Tinned curry (check halal certification if needed)', qty: (h) => `${h.people * h.duration} tins`, cost: (h) => h.people * h.duration * 1.5, essential: false, showIf: (h) => h.cuisines.includes('south-asian') },
+      { name: 'Basic spices already used at home (salt, chilli, turmeric, cumin) in small travel tub', qty: () => '1 set', cost: () => 5, essential: false, showIf: (h) => h.cuisines.includes('south-asian') },
+      { name: 'Pickle / chutney (long shelf life, makes plain food edible)', qty: () => '1 jar', cost: () => 2, essential: false, showIf: (h) => h.cuisines.includes('south-asian') },
+      { name: 'Tea (loose or bags) + powdered/UHT milk', qty: () => '1 box', cost: () => 4, essential: false, showIf: (h) => h.cuisines.includes('south-asian') },
 
       // Middle Eastern staples
-      { id: 'rice-middle-eastern', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'middle-eastern' },
-      { name: 'Tinned chickpeas / fava beans (ful)', qty: (h) => `${h.people * h.duration} tins`, cost: (h) => h.people * h.duration * 1, essential: true, showIf: (h) => h.cuisine === 'middle-eastern' },
-      { name: 'Dates (very high energy, no prep needed, culturally familiar)', qty: (h) => `${h.people} portions`, cost: (h) => h.people * 2, essential: true, showIf: (h) => h.cuisine === 'middle-eastern' },
-      { name: 'Flatbread (long-life/frozen, or flour to make more once cooking is possible)', qty: () => '1 pack or bag', cost: () => 2, essential: false, showIf: (h) => h.cuisine === 'middle-eastern' },
-      { name: 'Olive oil (small bottle)', qty: () => '1', cost: () => 5, essential: false, showIf: (h) => h.cuisine === 'middle-eastern' },
-      { name: 'Tinned/jarred hummus or tahini', qty: () => '1-2', cost: () => 3, essential: false, showIf: (h) => h.cuisine === 'middle-eastern' },
+      { id: 'rice-middle-eastern', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisines.includes('middle-eastern') },
+      { name: 'Tinned chickpeas / fava beans (ful)', qty: (h) => `${h.people * h.duration} tins`, cost: (h) => h.people * h.duration * 1, essential: true, showIf: (h) => h.cuisines.includes('middle-eastern') },
+      { name: 'Dates (very high energy, no prep needed, culturally familiar)', qty: (h) => `${h.people} portions`, cost: (h) => h.people * 2, essential: true, showIf: (h) => h.cuisines.includes('middle-eastern') },
+      { name: 'Flatbread (long-life/frozen, or flour to make more once cooking is possible)', qty: () => '1 pack or bag', cost: () => 2, essential: false, showIf: (h) => h.cuisines.includes('middle-eastern') },
+      { name: 'Olive oil (small bottle)', qty: () => '1', cost: () => 5, essential: false, showIf: (h) => h.cuisines.includes('middle-eastern') },
+      { name: 'Tinned/jarred hummus or tahini', qty: () => '1-2', cost: () => 3, essential: false, showIf: (h) => h.cuisines.includes('middle-eastern') },
 
       // East/Southeast Asian staples
-      { id: 'rice-east-southeast-asian', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'east-southeast-asian' },
-      { name: 'Instant/dried noodles', qty: (h) => `${h.people * h.duration} packs`, cost: (h) => h.people * h.duration * 0.5, essential: true, showIf: (h) => h.cuisine === 'east-southeast-asian' },
-      { name: 'Soy sauce / seasoning sachets', qty: () => '1 bottle', cost: () => 2, essential: false, showIf: (h) => h.cuisine === 'east-southeast-asian' },
-      { name: 'Tinned or dried fish', qty: (h) => `${h.people * h.duration} portions`, cost: (h) => h.people * h.duration * 1.2, essential: false, showIf: (h) => h.cuisine === 'east-southeast-asian' },
-      { name: 'Seaweed snacks / dried vegetables (long-life, familiar)', qty: () => '1 pack', cost: () => 2, essential: false, showIf: (h) => h.cuisine === 'east-southeast-asian' },
+      { id: 'rice-east-southeast-asian', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisines.includes('east-southeast-asian') },
+      { name: 'Instant/dried noodles', qty: (h) => `${h.people * h.duration} packs`, cost: (h) => h.people * h.duration * 0.5, essential: true, showIf: (h) => h.cuisines.includes('east-southeast-asian') },
+      { name: 'Soy sauce / seasoning sachets', qty: () => '1 bottle', cost: () => 2, essential: false, showIf: (h) => h.cuisines.includes('east-southeast-asian') },
+      { name: 'Tinned or dried fish', qty: (h) => `${h.people * h.duration} portions`, cost: (h) => h.people * h.duration * 1.2, essential: false, showIf: (h) => h.cuisines.includes('east-southeast-asian') },
+      { name: 'Seaweed snacks / dried vegetables (long-life, familiar)', qty: () => '1 pack', cost: () => 2, essential: false, showIf: (h) => h.cuisines.includes('east-southeast-asian') },
 
       // Caribbean / African staples
-      { id: 'rice-caribbean-african', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisine === 'caribbean-african' },
-      { name: 'Tinned beans/peas (kidney, black-eyed, gungo)', qty: (h) => `${h.people * h.duration} tins`, cost: (h) => h.people * h.duration * 1, essential: true, showIf: (h) => h.cuisine === 'caribbean-african' },
-      { name: 'Plantain flour or tinned plantain', qty: () => '1', cost: () => 2, essential: false, showIf: (h) => h.cuisine === 'caribbean-african' },
-      { name: 'Tinned callaloo / stewed vegetables', qty: (h) => `${h.people} tins`, cost: (h) => h.people * 1.5, essential: false, showIf: (h) => h.cuisine === 'caribbean-african' },
-      { name: 'Cooking oil (small bottle)', qty: () => '1', cost: () => 3, essential: true, showIf: (h) => h.cuisine === 'caribbean-african' }
+      { id: 'rice-caribbean-african', name: 'Rice (dry, long-life)', qty: (h) => `enough for ${h.duration} days`, cost: () => 5, essential: true, showIf: (h) => h.cuisines.includes('caribbean-african') },
+      { name: 'Tinned beans/peas (kidney, black-eyed, gungo)', qty: (h) => `${h.people * h.duration} tins`, cost: (h) => h.people * h.duration * 1, essential: true, showIf: (h) => h.cuisines.includes('caribbean-african') },
+      { name: 'Plantain flour or tinned plantain', qty: () => '1', cost: () => 2, essential: false, showIf: (h) => h.cuisines.includes('caribbean-african') },
+      { name: 'Tinned callaloo / stewed vegetables', qty: (h) => `${h.people} tins`, cost: (h) => h.people * 1.5, essential: false, showIf: (h) => h.cuisines.includes('caribbean-african') },
+      { name: 'Cooking oil (small bottle)', qty: () => '1', cost: () => 3, essential: true, showIf: (h) => h.cuisines.includes('caribbean-african') }
     ]
   },
   {

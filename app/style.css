@@ -149,6 +149,47 @@ fieldset.field > legend {
 
 .field-hint { color: var(--muted); font-size: 0.85rem; margin: 0.45rem 0 0; max-width: 42em; }
 
+/* Airline-style passenger counter: − [value] + */
+.counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #fff;
+}
+.counter input[type="number"] {
+  width: 3.5rem !important;
+  max-width: none !important;
+  text-align: center;
+  border: none !important;
+  border-left: 1px solid var(--border) !important;
+  border-right: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  padding: 0.55rem 0.3rem !important;
+  -moz-appearance: textfield;
+}
+.counter input[type="number"]::-webkit-outer-spin-button,
+.counter input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.counter__btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border: none;
+  background: var(--bg);
+  color: var(--accent-dark);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.counter__btn:hover { background: var(--accent-soft); }
+.counter__btn:active { background: var(--accent-soft); }
+
 .form-section {
   background: var(--section-tint, var(--bg));
   border: 1px solid var(--section-border, var(--border));

@@ -27,23 +27,39 @@
         <p class="form-section__label">Your household</p>
 
         <div class="field">
-          <label for="household-size">How many people in your household?</label>
-          <input type="number" id="household-size" min="1" max="20" value="4" required />
+          <label for="adults">Adults (18+)</label>
+          <div class="counter">
+            <button type="button" class="counter__btn" data-step="adults" data-delta="-1" aria-label="Decrease adults">&minus;</button>
+            <input type="number" id="adults" min="1" max="20" value="4" required inputmode="numeric" />
+            <button type="button" class="counter__btn" data-step="adults" data-delta="1" aria-label="Increase adults">+</button>
+          </div>
         </div>
 
         <div class="field">
-          <label for="children">How many are children under 5?</label>
-          <input type="number" id="children" min="0" max="20" value="0" />
+          <label for="children">Children (under 5)</label>
+          <div class="counter">
+            <button type="button" class="counter__btn" data-step="children" data-delta="-1" aria-label="Decrease children">&minus;</button>
+            <input type="number" id="children" min="0" max="20" value="0" inputmode="numeric" />
+            <button type="button" class="counter__btn" data-step="children" data-delta="1" aria-label="Increase children">+</button>
+          </div>
         </div>
 
         <div class="field">
-          <label for="elderly">How many are elderly or have additional medical needs?</label>
-          <input type="number" id="elderly" min="0" max="20" value="0" />
+          <label for="elderly">Of the adults above, how many are elderly or have additional medical needs?</label>
+          <div class="counter">
+            <button type="button" class="counter__btn" data-step="elderly" data-delta="-1" aria-label="Decrease elderly/medical needs">&minus;</button>
+            <input type="number" id="elderly" min="0" max="20" value="0" inputmode="numeric" />
+            <button type="button" class="counter__btn" data-step="elderly" data-delta="1" aria-label="Increase elderly/medical needs">+</button>
+          </div>
         </div>
 
         <div class="field">
-          <label for="pets">How many pets?</label>
-          <input type="number" id="pets" min="0" max="20" value="0" />
+          <label for="pets">Pets</label>
+          <div class="counter">
+            <button type="button" class="counter__btn" data-step="pets" data-delta="-1" aria-label="Decrease pets">&minus;</button>
+            <input type="number" id="pets" min="0" max="20" value="0" inputmode="numeric" />
+            <button type="button" class="counter__btn" data-step="pets" data-delta="1" aria-label="Increase pets">+</button>
+          </div>
         </div>
       </div>
 
@@ -90,17 +106,15 @@
       <div class="form-section form-section--food">
         <p class="form-section__label">Food</p>
 
-        <div class="field">
-          <label for="cuisine">What food would your household actually want to eat during a disruption?</label>
-          <select id="cuisine">
-            <option value="general" selected>No particular preference</option>
-            <option value="south-asian">South Asian</option>
-            <option value="middle-eastern">Middle Eastern</option>
-            <option value="east-southeast-asian">East/Southeast Asian</option>
-            <option value="caribbean-african">Caribbean / African</option>
-          </select>
-          <p class="field-hint">Military-style ration packs and plain tinned food cover calories, but in a multi-day disruption, familiar food matters for comfort and for kids actually eating — we'll suggest shelf-stable staples to match (e.g. South Asian: rice, lentils/daal, ghee. Middle Eastern: rice, dates, chickpeas. East/Southeast Asian: rice, noodles, soy sauce. Caribbean/African: rice, beans, plantain).</p>
-        </div>
+        <fieldset class="field">
+          <legend>What food would your household actually want to eat during a disruption? (select all that apply)</legend>
+          <label class="checkbox"><input type="checkbox" value="western" name="cuisine" checked /> Western (tinned/ration staples)</label>
+          <label class="checkbox"><input type="checkbox" value="south-asian" name="cuisine" /> South Asian</label>
+          <label class="checkbox"><input type="checkbox" value="middle-eastern" name="cuisine" /> Middle Eastern</label>
+          <label class="checkbox"><input type="checkbox" value="east-southeast-asian" name="cuisine" /> East/Southeast Asian</label>
+          <label class="checkbox"><input type="checkbox" value="caribbean-african" name="cuisine" /> Caribbean / African</label>
+          <p class="field-hint">Military-style ration packs and plain tinned food cover calories, but in a multi-day disruption, familiar food matters for comfort and for kids actually eating — we'll suggest shelf-stable staples to match. Pick more than one if your household eats a mix (e.g. Western + South Asian). South Asian: rice, lentils/daal, ghee. Middle Eastern: rice, dates, chickpeas. East/Southeast Asian: rice, noodles, soy sauce. Caribbean/African: rice, beans, plantain.</p>
+        </fieldset>
 
         <fieldset class="field">
           <legend>Dietary / religious needs (select all that apply)</legend>

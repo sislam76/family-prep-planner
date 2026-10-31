@@ -33,16 +33,31 @@ let state = loadState();
 // for returning users, and silently blanking the food list.
 function normalizeHousehold(h) {
   if (!h) return h;
+  const children = Math.max(0, parseInt(h.children, 10) || 0);
+  // `adults` is the current field. Older saved households only had a combined
+  // `people` total with no adults/children split — back it out so returning
+  // users don't lose their plan.
+  const adults = h.adults !== undefined
+    ? Math.max(1, parseInt(h.adults, 10) || 1)
+    : Math.max(1, (Math.max(1, parseInt(h.people, 10) || 1)) - children);
+
+  // `cuisine` (singular) was the old single-select field; 'general' was its
+  // default value, now relabelled 'western'.
+  const cuisines = Array.isArray(h.cuisines) && h.cuisines.length > 0
+    ? h.cuisines
+    : (h.cuisine ? [h.cuisine === 'general' ? 'western' : h.cuisine] : ['western']);
+
   return {
-    people: Math.max(1, parseInt(h.people, 10) || 1),
-    children: Math.max(0, parseInt(h.children, 10) || 0),
-    elderly: Math.max(0, parseInt(h.elderly, 10) || 0),
+    adults,
+    children,
+    people: adults + children,
+    elderly: Math.max(0, Math.min(adults, parseInt(h.elderly, 10) || 0)),
     pets: Math.max(0, parseInt(h.pets, 10) || 0),
     tier: h.tier || 'comfortable',
     space: h.space || 'small',
     storageLocation: h.storageLocation || 'indoor',
     duration: Math.max(1, parseInt(h.duration, 10) || 3),
-    cuisine: h.cuisine || 'general',
+    cuisines,
     diet: Array.isArray(h.diet) ? h.diet : [],
     cooking: h.cooking || 'none',
     devices: Math.max(0, parseInt(h.devices, 10) || 0),
@@ -53,8 +68,9 @@ function normalizeHousehold(h) {
 
 function readHousehold() {
   const diet = Array.from(document.querySelectorAll('input[name="diet"]:checked')).map(el => el.value);
+  const cuisines = Array.from(document.querySelectorAll('input[name="cuisine"]:checked')).map(el => el.value);
   return normalizeHousehold({
-    people: document.getElementById('household-size').value,
+    adults: document.getElementById('adults').value,
     children: document.getElementById('children').value,
     elderly: document.getElementById('elderly').value,
     pets: document.getElementById('pets').value,
@@ -62,7 +78,7 @@ function readHousehold() {
     space: document.getElementById('space').value,
     storageLocation: document.getElementById('storageLocation').value,
     duration: document.getElementById('duration').value,
-    cuisine: document.getElementById('cuisine').value,
+    cuisines,
     diet,
     cooking: document.getElementById('cooking').value,
     devices: document.getElementById('devices').value,
@@ -74,7 +90,7 @@ function readHousehold() {
 // Expects an already-normalized household (see normalizeHousehold) — every
 // field is guaranteed present, so no defensive fallbacks needed here.
 function populateForm(h) {
-  document.getElementById('household-size').value = h.people;
+  document.getElementById('adults').value = h.adults;
   document.getElementById('children').value = h.children;
   document.getElementById('elderly').value = h.elderly;
   document.getElementById('pets').value = h.pets;
@@ -82,13 +98,15 @@ function populateForm(h) {
   document.getElementById('space').value = h.space;
   document.getElementById('storageLocation').value = h.storageLocation;
   document.getElementById('duration').value = h.duration;
-  document.getElementById('cuisine').value = h.cuisine;
   document.getElementById('cooking').value = h.cooking;
   document.getElementById('devices').value = h.devices;
   document.getElementById('solar').checked = h.solar;
   document.getElementById('postcode').value = h.postcode;
   document.querySelectorAll('input[name="diet"]').forEach(el => {
     el.checked = h.diet.includes(el.value);
+  });
+  document.querySelectorAll('input[name="cuisine"]').forEach(el => {
+    el.checked = h.cuisines.includes(el.value);
   });
 }
 
@@ -398,6 +416,18 @@ function focusHeading(panelId) {
   const heading = document.querySelector(`#${panelId} h2`);
   if (heading) heading.focus();
 }
+
+// Airline-style passenger counters (Adults/Children/Elderly/Pets).
+document.querySelectorAll('.counter__btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = document.getElementById(btn.dataset.step);
+    const delta = parseInt(btn.dataset.delta, 10);
+    const min = parseInt(input.min, 10) || 0;
+    const max = parseInt(input.max, 10) || 99;
+    const next = Math.min(max, Math.max(min, (parseInt(input.value, 10) || 0) + delta));
+    input.value = next;
+  });
+});
 
 document.getElementById('intake-form').addEventListener('submit', (e) => {
   e.preventDefault();

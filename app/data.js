@@ -107,8 +107,15 @@ const CATEGORIES = [
   {
     id: 'cooking',
     title: 'Cooking & heating food/water',
-    note: 'If mains gas and electricity are both out, you need an independent way to boil water and heat food.',
+    note: 'If mains gas and electricity are both out, you need an independent way to boil water and heat food. SAFETY: never use a gas stove or BBQ indoors, in a tent, or to heat a room — carbon monoxide is invisible and odourless, and this exact "power cut, bring the camping stove inside" scenario is a recurring cause of CO poisoning deaths in the UK. Only use one outdoors, or indoors with a door/window fully open the whole time it is lit, never overnight.',
     items: [
+      {
+        name: 'Battery-powered carbon monoxide alarm',
+        qty: () => '1',
+        cost: () => 12,
+        essential: true,
+        showIf: (h) => h.cooking === 'none' || h.cooking === 'camping-stove' || h.cooking === 'bbq'
+      },
       {
         name: 'Camping/gas canister stove',
         qty: () => '1',
@@ -146,6 +153,12 @@ const CATEGORIES = [
         cost: () => 12,
         essential: true,
         showIf: (h) => h.cooking === 'none' || h.cooking === 'camping-stove'
+      },
+      {
+        name: 'Fire blanket (for a pan fire — never use water on a burning pan)',
+        qty: () => '1',
+        cost: () => 7,
+        essential: false
       }
     ]
   },
@@ -207,7 +220,12 @@ const CATEGORIES = [
         showIf: (h) => h.solar && h.devices > 0
       },
       { name: 'Battery or crank-powered radio (for emergency broadcasts)', qty: () => '1', cost: () => 20, essential: true },
-      { name: 'Candles + holders (use with care, ventilation)', qty: () => 'small supply', cost: () => 5, essential: false }
+      {
+        name: 'Candles + holders (fire risk: never leave burning unattended, keep clear of curtains/paper, keep away from kids and pets — a torch is safer as your primary light)',
+        qty: () => 'small supply',
+        cost: () => 5,
+        essential: false
+      }
     ]
   },
   {

@@ -149,46 +149,73 @@ fieldset.field > legend {
 
 .field-hint { color: var(--muted); font-size: 0.85rem; margin: 0.45rem 0 0; max-width: 42em; }
 
-/* Airline-style passenger counter: − [value] + */
-.counter {
+/* Airline-style passenger counter row: label+subtitle on the left,
+   rounded-square −/+ buttons with the value between them on the right. */
+.counter-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--section-border, var(--border));
+}
+.counter-field:last-child { border-bottom: none; }
+
+.counter-field__info { display: flex; flex-direction: column; gap: 0.15rem; }
+.counter-field__label { font-weight: 700; font-size: 1rem; color: var(--text); }
+.counter-field__subtitle { font-size: 0.85rem; color: var(--muted); }
+
+.info-icon {
   display: inline-flex;
   align-items: center;
-  gap: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  background: #fff;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--muted);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-style: normal;
+  cursor: help;
+  vertical-align: middle;
 }
+
+.counter { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
 .counter input[type="number"] {
-  width: 3.5rem !important;
+  width: 1.6rem !important;
   max-width: none !important;
   text-align: center;
   border: none !important;
-  border-left: 1px solid var(--border) !important;
-  border-right: 1px solid var(--border) !important;
   border-radius: 0 !important;
-  padding: 0.55rem 0.3rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  font-size: 1.05rem;
+  font-weight: 700;
   -moz-appearance: textfield;
 }
+.counter input[type="number"]:focus { box-shadow: none; }
 .counter input[type="number"]::-webkit-outer-spin-button,
 .counter input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 .counter__btn {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   flex-shrink: 0;
   border: none;
+  border-radius: var(--radius-sm);
   background: var(--bg);
-  color: var(--accent-dark);
-  font-size: 1.1rem;
-  font-weight: 700;
+  color: var(--muted);
+  font-size: 1.2rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
-.counter__btn:hover { background: var(--accent-soft); }
+.counter__btn:hover { background: var(--accent-soft); color: var(--accent-dark); }
 .counter__btn:active { background: var(--accent-soft); }
+.counter__btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .form-section {
   background: var(--section-tint, var(--bg));

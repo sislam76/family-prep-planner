@@ -26,38 +26,50 @@
       <div class="form-section form-section--household">
         <p class="form-section__label">Your household</p>
 
-        <div class="field">
-          <label for="adults">Adults (18+)</label>
+        <div class="counter-field">
+          <div class="counter-field__info">
+            <span class="counter-field__label">Adults</span>
+            <span class="counter-field__subtitle">Aged 18+</span>
+          </div>
           <div class="counter">
             <button type="button" class="counter__btn" data-step="adults" data-delta="-1" aria-label="Decrease adults">&minus;</button>
-            <input type="number" id="adults" min="1" max="20" value="4" required inputmode="numeric" />
+            <input type="number" id="adults" min="1" max="20" value="4" required inputmode="numeric" aria-label="Number of adults" />
             <button type="button" class="counter__btn" data-step="adults" data-delta="1" aria-label="Increase adults">+</button>
           </div>
         </div>
 
-        <div class="field">
-          <label for="children">Children (under 5)</label>
+        <div class="counter-field">
+          <div class="counter-field__info">
+            <span class="counter-field__label">Children <span class="info-icon" tabindex="0" title="Counted separately because they need things like nappies and comfort items — enter under-5s here, and cover older kids/teens as adults for quantity purposes.">&#9432;</span></span>
+            <span class="counter-field__subtitle">Aged under 5</span>
+          </div>
           <div class="counter">
             <button type="button" class="counter__btn" data-step="children" data-delta="-1" aria-label="Decrease children">&minus;</button>
-            <input type="number" id="children" min="0" max="20" value="0" inputmode="numeric" />
+            <input type="number" id="children" min="0" max="20" value="0" inputmode="numeric" aria-label="Number of children under 5" />
             <button type="button" class="counter__btn" data-step="children" data-delta="1" aria-label="Increase children">+</button>
           </div>
         </div>
 
-        <div class="field">
-          <label for="elderly">Of the adults above, how many are elderly or have additional medical needs?</label>
+        <div class="counter-field">
+          <div class="counter-field__info">
+            <span class="counter-field__label">Elderly / medical needs</span>
+            <span class="counter-field__subtitle">Of the adults above</span>
+          </div>
           <div class="counter">
             <button type="button" class="counter__btn" data-step="elderly" data-delta="-1" aria-label="Decrease elderly/medical needs">&minus;</button>
-            <input type="number" id="elderly" min="0" max="20" value="0" inputmode="numeric" />
+            <input type="number" id="elderly" min="0" max="20" value="0" inputmode="numeric" aria-label="Number of adults with elderly or additional medical needs" />
             <button type="button" class="counter__btn" data-step="elderly" data-delta="1" aria-label="Increase elderly/medical needs">+</button>
           </div>
         </div>
 
-        <div class="field">
-          <label for="pets">Pets</label>
+        <div class="counter-field">
+          <div class="counter-field__info">
+            <span class="counter-field__label">Pets</span>
+            <span class="counter-field__subtitle">Dogs, cats, etc.</span>
+          </div>
           <div class="counter">
             <button type="button" class="counter__btn" data-step="pets" data-delta="-1" aria-label="Decrease pets">&minus;</button>
-            <input type="number" id="pets" min="0" max="20" value="0" inputmode="numeric" />
+            <input type="number" id="pets" min="0" max="20" value="0" inputmode="numeric" aria-label="Number of pets" />
             <button type="button" class="counter__btn" data-step="pets" data-delta="1" aria-label="Increase pets">+</button>
           </div>
         </div>
